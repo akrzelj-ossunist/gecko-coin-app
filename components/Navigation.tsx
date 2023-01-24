@@ -11,7 +11,7 @@ const Navigation: React.FC<{ children: JSX.Element | JSX.Element[] }> = ({
 }) => {
   const [coinValue, setCoinValue] = useState("undefined");
   const [showCoinSearchList, setShowCoinSearchList] = useState(false);
-
+  console.log(showCoinSearchList);
   const debouncedValue = useDebounce<string>(coinValue, 250);
   const { data: coinData, isLoading } = useGetCoinByNameQuery(
     debouncedValue || "undefined"
@@ -22,20 +22,21 @@ const Navigation: React.FC<{ children: JSX.Element | JSX.Element[] }> = ({
         <Link href="/" className="text-white font-extrabold text-3xl m-2">
           CoinBunny
         </Link>
-        <div onClick={() => setShowCoinSearchList(true)} className="relative">
+        <div className="relative">
           <Image
             src={search}
             alt="search"
-            className="w-4 m-4 absolute ml-[195px]"
+            className="w-4 m-4 absolute ml-[215px]"
           />
           <input
+            onClick={() => setShowCoinSearchList(true)}
             onChange={(el) => setCoinValue(el.target.value)}
-            className="w-[220px] h-8 rounded-md mt-2 pr-8 pl-2"
+            className="w-[240px] h-8 rounded-md mt-2 pr-8 pl-2"
           />
           <div
             className={`${
               showCoinSearchList ? "flex" : "hidden"
-            } w-full h-4 flex-col sticky mt-1 rounded-md items-center`}
+            } w-full h-[200px] flex-col mt-1 rounded-md items-center overflow-y-auto absolute`}
           >
             {isLoading ? (
               <></>
@@ -43,8 +44,8 @@ const Navigation: React.FC<{ children: JSX.Element | JSX.Element[] }> = ({
               coinData?.coins.map((coin: CoinDetails) => {
                 return (
                   <Link
-                    href={`/${coin.id}`}
                     onClick={() => setShowCoinSearchList(false)}
+                    href={`/${coin.id}`}
                     className="flex justify-between w-[220px] bg-white p-2 border-[1px] border-gray-300"
                   >
                     <p>{coin.name}</p>

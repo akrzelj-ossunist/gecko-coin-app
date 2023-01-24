@@ -1,8 +1,29 @@
 import Link from "next/link";
 import { useMemo } from "react";
 import { useTable } from "react-table";
-import { Doughnut } from "react-chartjs-2";
 import { CoinDetails } from "@/services/interface";
+import useGetChartDetailsQuery from "@/services/getChartDetails";
+import { Line } from "react-chartjs-2";
+import {
+  Chart as ChartJS,
+  LineController,
+  LineElement,
+  PointElement,
+  Legend,
+  Tooltip,
+  CategoryScale,
+  LinearScale,
+} from "chart.js";
+
+ChartJS.register(
+  LineController,
+  LineElement,
+  PointElement,
+  Legend,
+  Tooltip,
+  CategoryScale,
+  LinearScale
+);
 
 interface CoinTableData {
   col1: number;
@@ -100,9 +121,14 @@ const CoinTable: React.FC<{
                       }`}
                     >
                       {cell.column.Header === "COIN" ? (
-                        <Link href={`/${cell.row.original.col7}`}>
+                        <Link href={`/${cell.row.original.col6}`}>
                           {cell.render("Cell")}
                         </Link>
+                      ) : cell.column.Header === "7D" ? (
+                        // <Line
+                        //   data={useGetChartDetailsQuery(String(cell.value))}
+                        // ></Line>
+                        "Hello"
                       ) : (
                         cell.render("Cell")
                       )}
