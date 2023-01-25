@@ -1,30 +1,24 @@
 import CoinTable from "@/components/CoinTable";
 import useGetCoinsQuery from "@/services/getCoins";
 import { CoinDetails } from "@/services/interface";
+import switchToUSD from "@/services/switchToUSD";
+import { GetServerSideProps } from "next";
+import { useQueryStates, queryTypes } from "next-usequerystate";
 import { useState } from "react";
 
-const switchToUSD = (price: string): string => {
-  let fixedPrice = price;
-  let rest = "";
-  if (price.indexOf(".") >= 0) {
-    rest = price.substring(price.indexOf("."), price.length);
-    fixedPrice = price.substring(0, price.indexOf("."));
-  }
-  fixedPrice = fixedPrice.split("").reverse().join("");
-  fixedPrice = fixedPrice.replace(/.{3}/g, "$&,");
-  fixedPrice = fixedPrice.split("").reverse().join("");
-  if (fixedPrice[0] === ",")
-    fixedPrice = fixedPrice.substring(1, fixedPrice.length);
-  return fixedPrice + rest;
-};
-
-export default function Home() {
-  const [sortBy, setSortBy] = useState("");
-  const [coinsAmount, setCoinsAmount] = useState<number>(20);
-  const { data: coinData, isLoading } = useGetCoinsQuery(
-    sortBy === "col2" ? "id" : sortBy === "col5" ? "market_cap" : "",
-    coinsAmount
+const Home: React.FC<{ sortBy: string; way: string }> = ({
+  sortBy: initialSort,
+  way: initialWay,
+}) => {
+  const [params, setParams] = useQueryStates(
+    {
+      sortBy: queryTypes.string.withDefault(initialSort),
+      way: queryTypes.string.withDefault(initialWay),
+    },
+    { history: "replace" }
   );
+  const [coinsAmount, setCoinsAmount] = useState<number>(20);
+  const { data: coinData, isLoading } = useGetCoinsQuery(params, coinsAmount);
 
   const coinTableData = coinData?.map((coin: CoinDetails) => {
     const priceChangePercentage24H =
@@ -42,18 +36,25 @@ export default function Home() {
   });
   if (isLoading) return <p>Loading...</p>;
 
-  window.onscroll = function () {
-    if (
-      window.innerHeight + window.pageYOffset >= document.body.offsetHeight &&
-      coinsAmount < 100
-    ) {
-      setCoinsAmount(20 + coinsAmount);
-    }
-  };
-
   return (
     <div>
-      <CoinTable coinTableData={coinTableData!} setSortBy={setSortBy} />
+      <CoinTable
+        coinTableData={coinTableData!}
+        setParams={setParams}
+        params={params}
+      />
     </div>
   );
-}
+};
+
+export default Home;
+
+export const getServerSideProps: GetServerSideProps = async (context) => {
+  const params = {
+    sortBy: context.query.sortBy || "",
+    way: context.query.way || "desc",
+  };
+  return {
+    props: { params },
+  };
+};

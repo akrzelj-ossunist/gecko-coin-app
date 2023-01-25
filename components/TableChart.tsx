@@ -21,7 +21,10 @@ ChartJS.register(
   LinearScale
 );
 
-const TableChart: React.FC<{ id: string }> = ({ id }) => {
+const TableChart: React.FC<{ id: string; status: string }> = ({
+  id,
+  status,
+}) => {
   const { data: chartData, isLoading } = useGetChartDetailsQuery(id);
   if (isLoading) return <p>Loading...</p>;
   let date: any[] = [];
@@ -34,15 +37,13 @@ const TableChart: React.FC<{ id: string }> = ({ id }) => {
     return price[1];
   });
 
+  const lineColor = status[0] === "-" ? "red" : "green";
   const dataChart = {
     labels: date,
     datasets: [
       {
-        label: "Price-Date",
         data: priceData,
-        fill: false,
-        borderColor: "red",
-        tension: 0.1,
+        borderColor: lineColor,
       },
     ],
   };

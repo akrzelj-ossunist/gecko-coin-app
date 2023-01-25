@@ -14,7 +14,7 @@ const Navigation: React.FC<{ children: JSX.Element | JSX.Element[] }> = ({
   console.log(showCoinSearchList);
   const debouncedValue = useDebounce<string>(coinValue, 250);
   const { data: coinData, isLoading } = useGetCoinByNameQuery(
-    debouncedValue || "undefined"
+    debouncedValue || ""
   );
   return (
     <>

@@ -2,9 +2,8 @@ import { useQuery } from 'react-query';
 import { CoinDetails, IAPICoin } from './interface';
 import axios from "axios"
 
-const getCoins = async (sortBy: string | string[], num: number | number[]) => {
-    
-    let url = `https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&order=${sortBy}_asc&per_page=20&page=1&sparkline=false`
+const getCoins = async (sortBy: string | string[], num: number | number[], way: string | string[]) => {
+    let url = `https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&order=${sortBy}_${way}&per_page=${num}&page=1&sparkline=false`
     try {
         const resp = await axios.get<CoinDetails[]>(url)
         return resp.data
@@ -13,8 +12,8 @@ const getCoins = async (sortBy: string | string[], num: number | number[]) => {
     }
 }
 
-const useGetCoinsQuery = (sortBy: string | string[], num: number | number[]) => {
-    return useQuery(["coins", sortBy, num],() => getCoins(sortBy, num))
+const useGetCoinsQuery = ({ sortBy, way }:{sortBy: string, way: string}, num: number | number[]) => {
+    return useQuery(["coins", sortBy, num, way],() => getCoins(sortBy, num, way))
 }
 
 export default useGetCoinsQuery

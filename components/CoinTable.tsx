@@ -14,9 +14,10 @@ interface CoinTableData {
 
 const CoinTable: React.FC<{
   coinTableData: CoinTableData[];
-  setSortBy: (val: string) => void;
-}> = ({ coinTableData, setSortBy }) => {
-  const data = useMemo(() => coinTableData, [coinTableData]);
+  setParams: ({ sortBy, way }: any) => void;
+  params: { sortBy: string; way: string };
+}> = ({ coinTableData, setParams, params }) => {
+  const data = useMemo(() => coinTableData, [params]);
 
   const columns = useMemo(
     () => [
@@ -63,10 +64,13 @@ const CoinTable: React.FC<{
               >
                 {headerGroup.headers.map((column: any) => {
                   return (
-                    <td {...column.getHeaderProps()} className="p-4">
+                    <td {...column.getHeaderProps()} className="pl-[4%] p-4">
                       <button
                         onClick={() => {
-                          setSortBy(column.id);
+                          setParams({
+                            sortBy: column.id == "col2" ? "id" : "market_cap",
+                            way: params.way === "asc" ? "desc" : "asc",
+                          });
                         }}
                         type="button"
                       >
@@ -92,7 +96,7 @@ const CoinTable: React.FC<{
                   return (
                     <td
                       {...cell.getCellProps()}
-                      className={`pl-4 ${
+                      className={`pl-[4%] ${
                         cell.column.Header === "24H" && cell.value[0] !== "-"
                           ? "text-green-500"
                           : cell.value[0] === "-" && "text-red-500"
@@ -103,8 +107,11 @@ const CoinTable: React.FC<{
                           {cell.render("Cell")}
                         </Link>
                       ) : cell.column.Header === "7D" ? (
-                        <div className="w-[70%] h-[80%]">
-                          {/* <TableChart id={String(cell.row.original.col6)} /> */}
+                        <div className="w-[50%] h-[25%]">
+                          {/* <TableChart
+                            id={String(cell.row.original.col6)}
+                            status={String(cell.row.original.col4)}
+                          /> */}
                         </div>
                       ) : (
                         cell.render("Cell")

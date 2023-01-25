@@ -14,6 +14,8 @@ import {
 } from "chart.js";
 import useGetCoinQuery from "../services/getCoin";
 import Image from "next/image";
+import { GetServerSideProps } from "next";
+import { useQueryState, queryTypes } from "next-usequerystate";
 
 ChartJS.register(
   LineController,
@@ -25,15 +27,17 @@ ChartJS.register(
   LinearScale
 );
 
-const CoinId: React.FC = () => {
+const CoinId: React.FC<{ timeNow: number }> = ({ timeNow: timeNow }) => {
   const router = useRouter();
-  const timeNow = Math.round(new Date().getTime() / 1000);
   const { name } = router.query;
-  const [timeFrom, setTimeFrom] = useState(String(timeNow - 86400));
+  const [timeFrom, setTimeFrom] = useQueryState(
+    "time",
+    queryTypes.string.withDefault(String(timeNow - 86400))
+  );
   const { data: coin, isLoading } = useGetCoinQuery(name || "");
   const { data: chartData, isLoading: Loading } = useGetPeriodChartDetailsQuery(
     name || "",
-    timeFrom,
+    timeFrom || "",
     String(timeNow)
   );
   if (Loading) return <p>Loading...</p>;
@@ -61,12 +65,14 @@ const CoinId: React.FC = () => {
       },
     ],
   };
-  const dataWidthLength = String(
-    Math.floor(
-      (100 * coin?.market_data.low_24h.usd) / coin?.market_data.high_24h.usd
-    )
-  );
-  console.log(dataWidthLength);
+
+  const dataWidthLength =
+    String(
+      Math.floor(
+        (100 * coin?.market_data.low_24h.usd) / coin?.market_data.high_24h.usd
+      )
+    ) + "%";
+
   return (
     <div className="flex mt-10 flex-col items-center h-[100vh]">
       <div className="flex w-[70%] justify-between mb-4">
@@ -103,7 +109,7 @@ const CoinId: React.FC = () => {
           <div className="flex ml-2">
             <p className="text-sm font-bold">{coin?.market_data.low_24h.usd}</p>
             <div
-              className={`w-[40%] mx-2 mt-[6px] h-[10px] relative bg-gray-500 overflow-hidden rounded-md before:absolute before:h-[6px] before:m-[2px] before:rounded-md before:w-[${dataWidthLength}%] before:bg-white`}
+              className={`w-[40%] mx-2 mt-[6px] h-[10px] relative bg-gray-500 overflow-hidden rounded-md before:absolute before:h-[6px] before:m-[2px] before:rounded-md before:w-[80%] before:bg-white`}
             ></div>
             <p className="text-sm font-bold">
               {coin?.market_data.high_24h.usd}
@@ -180,3 +186,11 @@ const CoinId: React.FC = () => {
 };
 
 export default CoinId;
+
+export const getServerSideProps: GetServerSideProps = async (context) => {
+  const timeNow =
+    context.query.timeNow || Math.round(new Date().getTime() / 1000);
+  return {
+    props: { timeNow: timeNow },
+  };
+};
