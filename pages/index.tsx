@@ -1,5 +1,4 @@
 import CoinTable from "@/components/CoinTable";
-import useGetChartDetailsQuery from "@/services/getChartDetails";
 import useGetCoinsQuery from "@/services/getCoins";
 import { CoinDetails } from "@/services/interface";
 import { useState } from "react";
@@ -21,9 +20,10 @@ const switchToUSD = (price: string): string => {
 
 export default function Home() {
   const [sortBy, setSortBy] = useState("");
-
+  const [coinsAmount, setCoinsAmount] = useState<number>(20);
   const { data: coinData, isLoading } = useGetCoinsQuery(
-    sortBy === "col2" ? "id" : sortBy === "col5" ? "market_cap" : ""
+    sortBy === "col2" ? "id" : sortBy === "col5" ? "market_cap" : "",
+    coinsAmount
   );
 
   const coinTableData = coinData?.map((coin: CoinDetails) => {
@@ -42,9 +42,18 @@ export default function Home() {
   });
   if (isLoading) return <p>Loading...</p>;
 
+  window.onscroll = function () {
+    if (
+      window.innerHeight + window.pageYOffset >= document.body.offsetHeight &&
+      coinsAmount < 100
+    ) {
+      setCoinsAmount(20 + coinsAmount);
+    }
+  };
+
   return (
-    <>
+    <div>
       <CoinTable coinTableData={coinTableData!} setSortBy={setSortBy} />
-    </>
+    </div>
   );
 }

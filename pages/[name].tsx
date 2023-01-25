@@ -13,6 +13,7 @@ import {
   LinearScale,
 } from "chart.js";
 import useGetCoinQuery from "../services/getCoin";
+import Image from "next/image";
 
 ChartJS.register(
   LineController,
@@ -60,19 +61,72 @@ const CoinId: React.FC = () => {
       },
     ],
   };
+  const dataWidthLength = String(
+    Math.floor(
+      (100 * coin?.market_data.low_24h.usd) / coin?.market_data.high_24h.usd
+    )
+  );
+  console.log(dataWidthLength);
   return (
-    <div className="flex flex-col items-center h-[100vh]">
-      <div className="flex w-[70%] justify-between">
-        <div>
-          <p>Rank:#{coin?.market_cap_rank}</p>
-          <p>{coin?.name}</p>
-          <p>Price: {coin?.tickers[0].last}$</p>
-          <p>{coin?.market_data.market_cap_change_percentage_24h}%</p>
+    <div className="flex mt-10 flex-col items-center h-[100vh]">
+      <div className="flex w-[70%] justify-between mb-4">
+        <div className="p-4 w-[50%]">
+          <p className="m-2 text-sm font-bold text-gray-400">
+            Rank:#{coin?.market_cap_rank}
+          </p>
+          <div className="flex m-2">
+            <Image
+              src={coin?.image.large}
+              alt={coin?.id}
+              width={30}
+              height={30}
+            />
+            <p className="font-bold ml-2 pt-[5px]">{coin?.name}</p>
+          </div>
+          <div className="flex m-2">
+            <p className="font-bold text-3xl">{coin?.tickers[0].last}$</p>
+            <p
+              className={`${
+                String(
+                  coin?.market_data.market_cap_change_percentage_24h
+                )[0] === "-"
+                  ? "bg-red-500"
+                  : "bg-green-500"
+              } text-white pt-[6px] ml-2 px-4 rounded-md`}
+            >
+              {Math.round(
+                coin?.market_data.market_cap_change_percentage_24h * 100
+              ) / 100}
+              %
+            </p>
+          </div>
+          <div className="flex ml-2">
+            <p className="text-sm font-bold">{coin?.market_data.low_24h.usd}</p>
+            <div
+              className={`w-[40%] mx-2 mt-[6px] h-[10px] relative bg-gray-500 overflow-hidden rounded-md before:absolute before:h-[6px] before:m-[2px] before:rounded-md before:w-[${dataWidthLength}%] before:bg-white`}
+            ></div>
+            <p className="text-sm font-bold">
+              {coin?.market_data.high_24h.usd}
+            </p>
+          </div>
         </div>
-        <div>
-          <p>Market cap: {coin?.market_data.market_cap.usd}</p>
-          <p>Circulating Supply: {coin?.market_data.circulating_supply}</p>
-          <p>Max Supply: {coin?.market_data.max_supply || "0"}</p>
+        <div className="w-[50%] border-2 p-4 border-blue-500">
+          <div className="flex justify-between m-3 border-b-[1px] border-gray-300 text-sm p-1">
+            <p>Market cap:</p>
+            <p>{coin?.market_data.market_cap.usd}$</p>
+          </div>
+          <div className="flex justify-between m-2 border-b-[1px] border-gray-300 text-sm p-1">
+            <p>Total volume:</p>
+            <p>{coin?.market_data.total_volume.usd}$</p>
+          </div>
+          <div className="flex justify-between m-2 border-b-[1px] border-gray-300 text-sm p-1">
+            <p>Circulating Supply:</p>
+            <p>{coin?.market_data.circulating_supply}</p>
+          </div>
+          <div className="flex justify-between m-2 border-b-[1px] border-gray-300 text-sm p-1">
+            <p>Max Supply:</p>
+            <p>{coin?.market_data.max_supply || "0"}</p>
+          </div>
         </div>
       </div>
       <div className="flex flex-col w-[70%] h-72">

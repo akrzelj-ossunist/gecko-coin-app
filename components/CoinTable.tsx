@@ -1,29 +1,7 @@
 import Link from "next/link";
 import { useMemo } from "react";
 import { useTable } from "react-table";
-import { CoinDetails } from "@/services/interface";
-import useGetChartDetailsQuery from "@/services/getChartDetails";
-import { Line } from "react-chartjs-2";
-import {
-  Chart as ChartJS,
-  LineController,
-  LineElement,
-  PointElement,
-  Legend,
-  Tooltip,
-  CategoryScale,
-  LinearScale,
-} from "chart.js";
-
-ChartJS.register(
-  LineController,
-  LineElement,
-  PointElement,
-  Legend,
-  Tooltip,
-  CategoryScale,
-  LinearScale
-);
+import TableChart from "./TableChart";
 
 interface CoinTableData {
   col1: number;
@@ -38,7 +16,7 @@ const CoinTable: React.FC<{
   coinTableData: CoinTableData[];
   setSortBy: (val: string) => void;
 }> = ({ coinTableData, setSortBy }) => {
-  const data = useMemo(() => coinTableData, []);
+  const data = useMemo(() => coinTableData, [coinTableData]);
 
   const columns = useMemo(
     () => [
@@ -114,7 +92,7 @@ const CoinTable: React.FC<{
                   return (
                     <td
                       {...cell.getCellProps()}
-                      className={`p-4 ${
+                      className={`pl-4 ${
                         cell.column.Header === "24H" && cell.value[0] !== "-"
                           ? "text-green-500"
                           : cell.value[0] === "-" && "text-red-500"
@@ -125,10 +103,9 @@ const CoinTable: React.FC<{
                           {cell.render("Cell")}
                         </Link>
                       ) : cell.column.Header === "7D" ? (
-                        // <Line
-                        //   data={useGetChartDetailsQuery(String(cell.value))}
-                        // ></Line>
-                        "Hello"
+                        <div className="w-[70%] h-[80%]">
+                          {/* <TableChart id={String(cell.row.original.col6)} /> */}
+                        </div>
                       ) : (
                         cell.render("Cell")
                       )}
