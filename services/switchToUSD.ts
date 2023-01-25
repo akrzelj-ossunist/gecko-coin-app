@@ -1,4 +1,4 @@
-const switchToUSD = (price: string): string => {
+export const switchToUSD = (price: string): string => {
     let fixedPrice = price;
     let rest = "";
     if (price.indexOf(".") >= 0) {
@@ -13,4 +13,8 @@ const switchToUSD = (price: string): string => {
     return fixedPrice + rest;
   };
 
-  export default switchToUSD
+  export const concatArrayOfArray = (arr: any[]): any[] => {
+    let newArray: any[] = []
+    arr.map(el => newArray = newArray.concat(el))
+    return newArray
+  }
