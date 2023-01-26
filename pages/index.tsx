@@ -1,10 +1,8 @@
 import CoinTable from "@/components/CoinTable";
 import useGetCoinsQuery from "@/services/getCoins";
-import { concatArrayOfArray, switchToUSD } from "@/services/switchToUSD";
+import { concatArrayOfArray, switchToUSD } from "@/services/customFunctions";
 import { GetServerSideProps } from "next";
 import { useQueryStates, queryTypes } from "next-usequerystate";
-import { useRef } from "react";
-import { useIntersectionObserver } from "usehooks-ts";
 
 const Home: React.FC<{ sortBy: string; way: string }> = ({
   sortBy: initialSort,
@@ -38,7 +36,7 @@ const Home: React.FC<{ sortBy: string; way: string }> = ({
         col4: priceChangePercentage24H || "0",
         col5: marketCap,
         col6: coin.id,
-        image: coin.image
+        image: coin.image,
       };
     });
   });

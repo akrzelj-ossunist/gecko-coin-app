@@ -1,9 +1,8 @@
 import Image from "next/image";
 import search from "../public/search.png";
-import { useEffect, useState } from "react";
-import useGetCoinByNameQuery from "../services/getCoinByName";
+import { useState } from "react";
+import useGetCoinByIdQuery from "../services/getCoinById";
 import { useDebounce } from "usehooks-ts";
-import { CoinDetails } from "@/services/interface";
 import Link from "next/link";
 import rabbit from "../public/rabbit.png";
 import login from "../public/login.png";
@@ -14,7 +13,7 @@ const Navigation: React.FC<{ children: JSX.Element | JSX.Element[] }> = ({
   const [coinValue, setCoinValue] = useState("undefined");
   const [showCoinSearchList, setShowCoinSearchList] = useState(false);
   const debouncedValue = useDebounce<string>(coinValue, 250);
-  const { data: coinData, isLoading } = useGetCoinByNameQuery(
+  const { data: coinData, isLoading } = useGetCoinByIdQuery(
     debouncedValue || ""
   );
   return (

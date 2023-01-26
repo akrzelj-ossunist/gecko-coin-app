@@ -3,6 +3,7 @@ import Link from "next/link";
 import { useEffect, useMemo, useRef } from "react";
 import { useTable } from "react-table";
 import { useIntersectionObserver } from "usehooks-ts";
+import TableChart from "./TableChart";
 
 interface CoinTableData {
   col1: number;
@@ -76,7 +77,7 @@ const CoinTable: React.FC<{
   return (
     <div className="flex w-full justify-center">
       <table {...getTableBodyProps()} className="w-[80%] shadow-lg mt-10">
-        <thead className="bg-gray-200 font-bold text-gray-500 text-lg">
+        <thead className="bg-gray-200 font-bold text-gray-500 text-md">
           {headerGroups.map((headerGroup: any) => {
             return (
               <tr
@@ -118,7 +119,7 @@ const CoinTable: React.FC<{
                   return (
                     <td
                       {...cell.getCellProps()}
-                      className={`pl-[4%] py-[10px] font-medium text-lg ${
+                      className={`pl-[4%] py-4 font-medium text-md ${
                         cell.column.Header === "24H" && cell.value[0] !== "-"
                           ? "text-green-500"
                           : cell.value[0] === "-" && "text-red-500"

@@ -1,6 +1,5 @@
 import useGetPeriodChartDetailsQuery from "@/services/getPeriodChartDetails";
 import { useRouter } from "next/router";
-import { useState } from "react";
 import { Line } from "react-chartjs-2";
 import {
   Chart as ChartJS,
@@ -16,6 +15,8 @@ import useGetCoinQuery from "../services/getCoin";
 import Image from "next/image";
 import { GetServerSideProps } from "next";
 import { useQueryState, queryTypes } from "next-usequerystate";
+import { switchToUSD } from "@/services/customFunctions";
+import { useState } from "react";
 
 ChartJS.register(
   LineController,
@@ -40,7 +41,7 @@ const CoinId: React.FC<{ timeNow: number }> = ({ timeNow: timeNow }) => {
     timeFrom || "",
     String(timeNow)
   );
-
+  const [activeButton, setActiveButton] = useState("1");
   if (isLoading) return <p>Loading...</p>;
 
   let date: any[] = [];
@@ -109,8 +110,13 @@ const CoinId: React.FC<{ timeNow: number }> = ({ timeNow: timeNow }) => {
           <div className="flex ml-2">
             <p className="text-sm font-bold">{coin?.market_data.low_24h.usd}</p>
             <div
-              className={`w-[40%] mx-2 mt-[6px] h-[10px] relative bg-gray-500 overflow-hidden rounded-md before:absolute before:h-[6px] before:m-[2px] before:rounded-md before:w-[80%] before:bg-white`}
-            ></div>
+              className={`w-[40%] mx-2 mt-[6px] h-[10px] relative bg-gray-500 overflow-hidden rounded-md`}
+            >
+              <div
+                style={{ width: dataWidthLength }}
+                className="absolute h-[6px] m-[2px] rounded-md bg-white"
+              ></div>
+            </div>
             <p className="text-sm font-bold">
               {coin?.market_data.high_24h.usd}
             </p>
@@ -119,11 +125,11 @@ const CoinId: React.FC<{ timeNow: number }> = ({ timeNow: timeNow }) => {
         <div className="w-[50%] border-2 p-4 border-blue-500">
           <div className="flex justify-between m-3 border-b-[1px] border-gray-300 text-sm p-1">
             <p>Market cap:</p>
-            <p>{coin?.market_data.market_cap.usd}$</p>
+            <p>{switchToUSD(String(coin?.market_data.market_cap.usd))}$</p>
           </div>
           <div className="flex justify-between m-2 border-b-[1px] border-gray-300 text-sm p-1">
             <p>Total volume:</p>
-            <p>{coin?.market_data.total_volume.usd}$</p>
+            <p>{switchToUSD(String(coin?.market_data.total_volume.usd))}$</p>
           </div>
           <div className="flex justify-between m-2 border-b-[1px] border-gray-300 text-sm p-1">
             <p>Circulating Supply:</p>
@@ -138,40 +144,76 @@ const CoinId: React.FC<{ timeNow: number }> = ({ timeNow: timeNow }) => {
       <div className="flex flex-col w-[70%] h-72">
         <div className="flex justify-between">
           <p className="font-extrabold text-3xl">Price:</p>
-          <div className="border-[1px] border-gray-400 h-[26px] mt-2">
+          <div className="border-[1px] border-gray-400 h-[26px] mt-2 rounded-md shadow-md">
             <button
-              onClick={() => setTimeFrom(String(timeNow - 86400))}
-              className="border-r-[1px] border-gray-400 px-4 font-semibold"
+              value="1"
+              onClick={() => {
+                setActiveButton("1");
+                setTimeFrom(String(timeNow - 86400));
+              }}
+              className={`border-r-[1px] border-gray-400 px-4 font-semibold rounded-l-md ${
+                activeButton === "1" && "bg-gray-300"
+              }`}
             >
               1
             </button>
             <button
-              onClick={() => setTimeFrom(String(timeNow - 604800))}
-              className="border-r-[1px] border-gray-400 px-4 font-semibold"
+              value="7"
+              onClick={() => {
+                setActiveButton("7");
+                setTimeFrom(String(timeNow - 604800));
+              }}
+              className={`border-r-[1px] border-gray-400 px-4 font-semibold ${
+                activeButton === "7" && "bg-gray-300"
+              }`}
             >
               7
             </button>
             <button
-              onClick={() => setTimeFrom(String(timeNow - 2592000))}
-              className="border-r-[1px] border-gray-400 px-4 font-semibold"
+              value="30"
+              onClick={() => {
+                setActiveButton("30");
+                setTimeFrom(String(timeNow - 2592000));
+              }}
+              className={`border-r-[1px] border-gray-400 px-4 font-semibold ${
+                activeButton === "30" && "bg-gray-300"
+              }`}
             >
               30
             </button>
             <button
-              onClick={() => setTimeFrom(String(timeNow - 7776000))}
-              className="border-r-[1px] border-gray-400 px-4 font-semibold"
+              value="90"
+              onClick={() => {
+                setActiveButton("90");
+                setTimeFrom(String(timeNow - 7776000));
+              }}
+              className={`border-r-[1px] border-gray-400 px-4 font-semibold ${
+                activeButton === "90" && "bg-gray-300"
+              }`}
             >
               90
             </button>
             <button
-              onClick={() => setTimeFrom(String(timeNow - 15552000))}
-              className="border-r-[1px] border-gray-400 px-4 font-semibold"
+              value="180"
+              onClick={() => {
+                setActiveButton("180");
+                setTimeFrom(String(timeNow - 15552000));
+              }}
+              className={`border-r-[1px] border-gray-400 px-4 font-semibold ${
+                activeButton === "180" && "bg-gray-300"
+              }`}
             >
               180
             </button>
             <button
-              onClick={() => setTimeFrom(String(timeNow - 31536000))}
-              className="px-4 font-semibold"
+              value="365"
+              onClick={() => {
+                setActiveButton("365");
+                setTimeFrom(String(timeNow - 31536000));
+              }}
+              className={`px-4 font-semibold rounded-r-md ${
+                activeButton === "365" && "bg-gray-300"
+              }`}
             >
               365
             </button>
