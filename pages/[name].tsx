@@ -40,7 +40,7 @@ const CoinId: React.FC<{ timeNow: number }> = ({ timeNow: timeNow }) => {
     timeFrom || "",
     String(timeNow)
   );
-  if (Loading) return <p>Loading...</p>;
+
   if (isLoading) return <p>Loading...</p>;
 
   let date: any[] = [];
@@ -178,7 +178,7 @@ const CoinId: React.FC<{ timeNow: number }> = ({ timeNow: timeNow }) => {
           </div>
         </div>
         <div>
-          <Line data={dataChart}></Line>
+          {Loading ? <p>Loading...</p> : <Line data={dataChart}></Line>}
         </div>
       </div>
     </div>

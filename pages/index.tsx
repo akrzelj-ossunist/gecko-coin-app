@@ -1,10 +1,10 @@
 import CoinTable from "@/components/CoinTable";
 import useGetCoinsQuery from "@/services/getCoins";
-import { CoinDetails } from "@/services/interface";
 import { concatArrayOfArray, switchToUSD } from "@/services/switchToUSD";
 import { GetServerSideProps } from "next";
 import { useQueryStates, queryTypes } from "next-usequerystate";
-import { useState, useEffect } from "react";
+import { useRef } from "react";
+import { useIntersectionObserver } from "usehooks-ts";
 
 const Home: React.FC<{ sortBy: string; way: string }> = ({
   sortBy: initialSort,
@@ -25,24 +25,6 @@ const Home: React.FC<{ sortBy: string; way: string }> = ({
     fetchNextPage,
   } = useGetCoinsQuery(params);
 
-  useEffect(() => {
-    const onscroll = (event: any) => {
-      const { scrollHeight, scrollTop, clientHeight } =
-        event.target.scrollingElement;
-      if (scrollHeight - scrollTop <= clientHeight * 1.2) {
-        isFetchingNextPage
-          ? console.log("fetching next page")
-          : hasNextPage
-          ? fetchNextPage()
-          : console.log("No more pages");
-      }
-    };
-    document.addEventListener("scroll", onscroll);
-    return () => {
-      document.removeEventListener("scroll", onscroll);
-    };
-  }, []);
-
   const coinTableData = coinData?.pages.map((page) => {
     return page?.map((coin) => {
       const priceChangePercentage24H =
@@ -56,6 +38,7 @@ const Home: React.FC<{ sortBy: string; way: string }> = ({
         col4: priceChangePercentage24H || "0",
         col5: marketCap,
         col6: coin.id,
+        image: coin.image
       };
     });
   });
@@ -67,6 +50,9 @@ const Home: React.FC<{ sortBy: string; way: string }> = ({
         coinTableData={connectedPages!}
         setParams={setParams}
         params={params}
+        hasNextPage={hasNextPage}
+        fetchNextPage={fetchNextPage}
+        isFetchingNextPage={isFetchingNextPage}
       />
     </div>
   );
