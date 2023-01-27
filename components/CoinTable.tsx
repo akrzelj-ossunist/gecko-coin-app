@@ -32,7 +32,6 @@ const CoinTable: React.FC<{
   const ref = useRef<HTMLTableRowElement | null>(null);
   const entry = useIntersectionObserver(ref, {});
   const isVisible = !!entry?.isIntersecting;
-  console.log(entry);
 
   const data = useMemo(() => coinTableData, [coinTableData]);
 
