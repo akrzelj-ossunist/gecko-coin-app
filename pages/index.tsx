@@ -1,10 +1,8 @@
 import CoinTable from "@/components/CoinTable";
 import useGetCoinsQuery from "@/services/getCoins";
-import { CoinDetails } from "@/services/interface";
-import switchToUSD from "@/services/switchToUSD";
+import { concatArrayOfArray, switchToUSD } from "@/services/customFunctions";
 import { GetServerSideProps } from "next";
 import { useQueryStates, queryTypes } from "next-usequerystate";
-import { useState } from "react";
 
 const Home: React.FC<{ sortBy: string; way: string }> = ({
   sortBy: initialSort,
@@ -17,31 +15,42 @@ const Home: React.FC<{ sortBy: string; way: string }> = ({
     },
     { history: "replace" }
   );
-  const [coinsAmount, setCoinsAmount] = useState<number>(20);
-  const { data: coinData, isLoading } = useGetCoinsQuery(params, coinsAmount);
+  const {
+    data: coinData,
+    isLoading,
+    hasNextPage,
+    isFetchingNextPage,
+    fetchNextPage,
+  } = useGetCoinsQuery(params);
 
-  const coinTableData = coinData?.map((coin: CoinDetails) => {
-    const priceChangePercentage24H =
-      Math.round(coin.price_change_percentage_24h * 100) / 100 + "%";
-    const currentPrice = switchToUSD(String(coin.current_price)) + " $";
-    const marketCap = switchToUSD(String(coin.market_cap)) + " $";
-    return {
-      col1: coin.market_cap_rank || 0,
-      col2: coin.name,
-      col3: currentPrice,
-      col4: priceChangePercentage24H || "0",
-      col5: marketCap,
-      col6: coin.id,
-    };
+  const coinTableData = coinData?.pages.map((page) => {
+    return page?.map((coin) => {
+      const priceChangePercentage24H =
+        Math.round(coin.price_change_percentage_24h * 100) / 100 + "%";
+      const currentPrice = switchToUSD(String(coin.current_price)) + " $";
+      const marketCap = switchToUSD(String(coin.market_cap)) + " $";
+      return {
+        col1: coin.market_cap_rank || 0,
+        col2: coin.name,
+        col3: currentPrice,
+        col4: priceChangePercentage24H || "0",
+        col5: marketCap,
+        col6: coin.id,
+        image: coin.image,
+      };
+    });
   });
   if (isLoading) return <p>Loading...</p>;
-
+  const connectedPages = concatArrayOfArray(coinTableData!);
   return (
     <div>
       <CoinTable
-        coinTableData={coinTableData!}
+        coinTableData={connectedPages!}
         setParams={setParams}
         params={params}
+        hasNextPage={hasNextPage}
+        fetchNextPage={fetchNextPage}
+        isFetchingNextPage={isFetchingNextPage}
       />
     </div>
   );

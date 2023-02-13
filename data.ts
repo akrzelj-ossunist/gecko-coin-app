@@ -1,0 +1,1 @@
+export const users = [ { username: "Mate", password: "adssad"} ]
