@@ -6,8 +6,8 @@ import { useDebounce } from "usehooks-ts";
 import Link from "next/link";
 import rabbit from "../public/rabbit.png";
 import login from "../public/login.png";
-import axios from "axios";
 import { useQuery } from "react-query";
+import axios from "axios";
 
 const Navigation: React.FC<{ children: JSX.Element | JSX.Element[] }> = ({
   children,
@@ -32,7 +32,7 @@ const Navigation: React.FC<{ children: JSX.Element | JSX.Element[] }> = ({
     route200()
   );
   if (Loading) return <p>Loading...</p>;
-
+  console.log(routeData);
   return (
     <>
       <div className="flex w-full justify-between bg-blue-500 sticky top-0 items-center">
@@ -69,7 +69,6 @@ const Navigation: React.FC<{ children: JSX.Element | JSX.Element[] }> = ({
               <></>
             ) : (
               coinData?.coins.map((coin: any) => {
-                console.log(coin);
                 return (
                   <Link
                     onClick={() => setShowCoinSearchList(false)}
