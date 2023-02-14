@@ -1,5 +1,5 @@
 import Image from "next/image";
-import search from "../public/search.png";
+
 import { useEffect, useState } from "react";
 import useGetCoinByIdQuery from "../services/getCoinById";
 import { useDebounce } from "usehooks-ts";
@@ -8,6 +8,7 @@ import rabbit from "../public/rabbit.png";
 import login from "../public/login.png";
 import { useQuery } from "react-query";
 import axios from "axios";
+import SearchBar from "./SearchBar";
 
 const Navigation: React.FC<{ children: JSX.Element | JSX.Element[] }> = ({
   children,
@@ -32,66 +33,30 @@ const Navigation: React.FC<{ children: JSX.Element | JSX.Element[] }> = ({
     route200()
   );
   if (Loading) return <p>Loading...</p>;
-  console.log(routeData);
   return (
     <>
-      <div className="flex w-full justify-between bg-blue-500 sticky top-0 items-center">
+      <div className="flex w-full justify-between bg-blue-500 sticky top-0 items-center tablet:z-50">
         <Link
           href="/"
-          className="text-white font-extrabold text-3xl ml-6 m-2 flex"
+          className="text-white font-extrabold text-3xl ml-6 m-2 flex phone:text-2xl"
         >
           <Image
             src={rabbit}
             alt="rabbit"
             width={50}
             height={25}
-            className="mr-2"
+            className="mr-2 phone:w-10"
           />
           <p className="mt-2">CoinBunny</p>
         </Link>
-        <div className="relative">
-          <Image
-            src={search}
-            alt="search"
-            className="w-4 m-4 absolute ml-[215px]"
-          />
-          <input
-            onClick={() => setShowCoinSearchList(true)}
-            onChange={(el) => setCoinValue(el.target.value)}
-            className="w-[240px] h-8 rounded-md mt-2 pr-8 pl-2"
-          />
-          <div
-            className={`${
-              showCoinSearchList ? "flex" : "hidden"
-            } w-full h-[200px] flex-col rounded-md items-center overflow-y-auto absolute`}
-          >
-            {isLoading ? (
-              <></>
-            ) : (
-              coinData?.coins.map((coin: any) => {
-                return (
-                  <Link
-                    onClick={() => setShowCoinSearchList(false)}
-                    href={`/${coin.id}`}
-                    className="flex justify-between w-[230px] bg-white p-2 border-[1px] border-gray-300"
-                  >
-                    <div className="flex">
-                      <Image
-                        src={coin.thumb}
-                        alt="coinImage"
-                        className="mr-2"
-                        width={25}
-                        height={10}
-                      />
-                      <p>{coin.name}</p>
-                    </div>
-                    <p>{coin.market_cap_rank}</p>
-                  </Link>
-                );
-              })
-            )}
-          </div>
-        </div>
+        <SearchBar
+          className="tablet:hidden"
+          setShowCoinSearchList={setShowCoinSearchList}
+          setCoinValue={setCoinValue}
+          showCoinSearchList={showCoinSearchList}
+          isLoading={isLoading}
+          coinData={coinData}
+        />
         <Link href="/login" className="flex mr-5">
           <Image
             src={login}
@@ -108,7 +73,17 @@ const Navigation: React.FC<{ children: JSX.Element | JSX.Element[] }> = ({
         </Link>
       </div>
 
-      <div onClick={() => setShowCoinSearchList(false)}>{children}</div>
+      <div onClick={() => setShowCoinSearchList(false)}>
+        <SearchBar
+          className="desktop:hidden w-full flex justify-center mt-4"
+          setShowCoinSearchList={setShowCoinSearchList}
+          setCoinValue={setCoinValue}
+          showCoinSearchList={showCoinSearchList}
+          isLoading={isLoading}
+          coinData={coinData}
+        />
+        {children}
+      </div>
     </>
   );
 };

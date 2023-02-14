@@ -75,9 +75,9 @@ const CoinId: React.FC<{ timeNow: number }> = ({ timeNow: timeNow }) => {
     ) + "%";
 
   return (
-    <div className="flex mt-10 flex-col items-center h-[100vh]">
-      <div className="flex w-[70%] justify-between mb-4">
-        <div className="p-4 w-[50%]">
+    <div className="flex mt-10 flex-col items-center h-[100vh] tablet:mt-4">
+      <div className="flex w-[70%] justify-between mb-4 tablet:flex-col tablet:w-full tablet:items-center">
+        <div className="p-4 w-[50%] tablet:w-full">
           <p className="m-2 text-sm font-bold text-gray-400">
             Rank:#{coin?.market_cap_rank}
           </p>
@@ -107,7 +107,7 @@ const CoinId: React.FC<{ timeNow: number }> = ({ timeNow: timeNow }) => {
               %
             </p>
           </div>
-          <div className="flex ml-2">
+          <div className="flex ml-2 tablet:w-full">
             <p className="text-sm font-bold">{coin?.market_data.low_24h.usd}</p>
             <div
               className={`w-[40%] mx-2 mt-[6px] h-[10px] relative bg-gray-500 overflow-hidden rounded-md`}
@@ -122,7 +122,7 @@ const CoinId: React.FC<{ timeNow: number }> = ({ timeNow: timeNow }) => {
             </p>
           </div>
         </div>
-        <div className="w-[50%] border-2 p-4 border-blue-500">
+        <div className="w-[50%] border-2 p-4 border-blue-500 tablet:w-full tablet:border-none">
           <div className="flex justify-between m-3 border-b-[1px] border-gray-300 text-sm p-1">
             <p>Market cap:</p>
             <p>{switchToUSD(String(coin?.market_data.market_cap.usd))}$</p>
@@ -141,10 +141,10 @@ const CoinId: React.FC<{ timeNow: number }> = ({ timeNow: timeNow }) => {
           </div>
         </div>
       </div>
-      <div className="flex flex-col w-[70%] h-72">
-        <div className="flex justify-between">
+      <div className="flex flex-col w-[70%] h-72 tablet:w-full tablet:p-4">
+        <div className="flex justify-between tablet:flex-col">
           <p className="font-extrabold text-3xl">Price:</p>
-          <div className="border-[1px] border-gray-400 h-[26px] mt-2 rounded-md shadow-md">
+          <div className="border-[1px] border-gray-400 h-[26px] mt-2 rounded-md shadow-md tablet:mb-6 tablet:w-[301px]">
             <button
               value="1"
               onClick={() => {

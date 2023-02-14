@@ -40,9 +40,9 @@ const Login: React.FC = () => {
   };
 
   return (
-    <div className="flex fixed top-0 left-0 bg-white w-full h-[100vh]">
-      <div className="w-[30%] h-[100vh] bg-blue-500 shadow-xl flex flex-col justify-between items-center">
-        <div className="fixed top-20 flex font-extrabold text-5xl text-white">
+    <div className="flex fixed top-0 left-0 bg-white w-full h-[100vh] tablet:top-auto">
+      <div className="w-[30%] h-[100vh] bg-blue-500 shadow-xl flex flex-col justify-between items-center tablet:hidden">
+        <div className="fixed top-20 flex font-extrabold text-5xl text-white flex-wrap justify-center">
           <Image src={rabbit} alt="logo" className="w-16 h-16" />
           <p className="ml-2 mt-4">CoinBunny</p>
         </div>
@@ -50,8 +50,8 @@ const Login: React.FC = () => {
           ©CoinBunnydoo
         </div>
       </div>
-      <div className="flex flex-col w-[70%] m-20 ml-52">
-        <div className="flex w-[25%]">
+      <div className="flex flex-col w-[70%] m-20 desktop:ml-52 tablet:mx-4 tablet:items-center tablet:w-full">
+        <div className="flex w-[25%] tablet:w-full tablet:justify-center">
           <p className="font-extrabold text-6xl">Login</p>
         </div>
         <Formik
@@ -68,7 +68,7 @@ const Login: React.FC = () => {
           {({ values, errors, touched }) => {
             console.log(values);
             return (
-              <Form className="my-10 w-[40%]">
+              <Form className="my-10 w-[400px] phone:w-[300px]">
                 <div className="mb-10 flex flex-col">
                   <label>Username:</label>
                   <Field
@@ -97,7 +97,7 @@ const Login: React.FC = () => {
                 </div>
                 <button
                   type="submit"
-                  className="text-white cursor-pointer font-bold w-[70%] rounded-xl text-2xl bg-blue-500 py-3 active:bg-blue-300 shadow-lg"
+                  className="text-white cursor-pointer font-bold w-[200px] rounded-xl text-2xl bg-blue-500 py-3 active:bg-blue-300 shadow-lg"
                 >
                   Login
                 </button>

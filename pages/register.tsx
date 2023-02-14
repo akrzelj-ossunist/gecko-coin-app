@@ -85,9 +85,9 @@ const Register: React.FC = () => {
   });
 
   return (
-    <div className="flex fixed top-0 left-0 bg-white w-full h-[100vh]">
-      <div className="w-[30%] h-[100vh] bg-blue-500 shadow-xl flex flex-col justify-between items-center">
-        <div className="fixed top-20 flex font-extrabold text-5xl text-white">
+    <div className="flex fixed top-0 left-0 bg-white w-full h-[100vh] tablet:top-auto">
+      <div className="w-[30%] h-[100vh] bg-blue-500 shadow-xl flex flex-col justify-between items-center tablet:hidden">
+        <div className="fixed top-20 flex font-extrabold text-5xl text-white flex-wrap justify-center">
           <Image src={rabbit} alt="logo" className="w-16 h-16" />
           <p className="ml-2 mt-4">CoinBunny</p>
         </div>
@@ -95,9 +95,9 @@ const Register: React.FC = () => {
           ©CoinBunnydoo
         </div>
       </div>
-      <div className="flex flex-col w-[70%] m-20 ml-52 overflow-y-auto">
-        <div className="flex w-[25%]">
-          <p className="font-extrabold text-6xl">Register</p>
+      <div className="flex flex-col w-[70%] m-20 ml-52 overflow-y-auto overflow-x-hidden tablet:w-full tablet:mx-10 tablet:items-center">
+        <div className="flex w-[25%] tablet:w-full">
+          <p className="font-extrabold text-6xl tablet:text-4xl">Register</p>
         </div>
         <Formik
           initialValues={register}
@@ -110,8 +110,8 @@ const Register: React.FC = () => {
         >
           {({ values, errors, touched }) => {
             return (
-              <Form className="my-10 w-[40%]">
-                <div className="mb-10 flex flex-col">
+              <Form className="my-10 w-[400px] tablet:w-full ">
+                <div className="mb-10 flex flex-col w-full">
                   <label>Username:</label>
                   <Field
                     className="border-b-2 border-black p-2 text-lg focus:outline-none"
@@ -124,8 +124,8 @@ const Register: React.FC = () => {
                     </label>
                   )}
                 </div>
-                <div className="flex">
-                  <div className="flex flex-col mb-10 mr-10">
+                <div className="flex tablet:flex-col w-full">
+                  <div className="flex flex-col mb-10 desktop:mr-10">
                     <label>Password: </label>
                     <Field
                       className="border-b-2 border-black p-2 text-lg focus:outline-none"
@@ -152,8 +152,8 @@ const Register: React.FC = () => {
                     )}
                   </div>
                 </div>
-                <div className="flex">
-                  <div className="flex flex-col mb-10 mr-10">
+                <div className="flex tablet:flex-col">
+                  <div className="flex flex-col mb-10 desktop:mr-10">
                     <label>Email: </label>
                     <Field
                       className="border-b-2 border-black p-2 text-lg focus:outline-none"
@@ -186,8 +186,8 @@ const Register: React.FC = () => {
                 </div>
                 {values.member && (
                   <>
-                    <div className="flex">
-                      <div className="flex flex-col mb-10 mr-10">
+                    <div className="flex tablet:flex-col">
+                      <div className="flex flex-col mb-10 desktop:mr-10">
                         <label>IBAN: </label>
                         <Field
                           className="border-b-2 border-black p-2 text-lg focus:outline-none"
@@ -214,8 +214,8 @@ const Register: React.FC = () => {
                         )}
                       </div>
                     </div>
-                    <div className="flex">
-                      <div className="flex flex-col mb-10 mr-10">
+                    <div className="flex tablet:flex-col">
+                      <div className="flex flex-col mb-10 desktop:mr-10">
                         <label>Expiration Date: </label>
                         <Field
                           className="border-b-2 border-black p-2 text-lg focus:outline-none"

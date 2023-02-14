@@ -53,7 +53,6 @@ const TableChart: React.FC<{ id: string; status: string }> = ({
       <Line
         data={dataChart}
         options={{
-          responsive: true,
           scales: {
             x: {
               ticks: {

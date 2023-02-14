@@ -75,8 +75,11 @@ const CoinTable: React.FC<{
 
   return (
     <div className="flex w-full justify-center">
-      <table {...getTableBodyProps()} className="w-[80%] shadow-lg mt-10">
-        <thead className="bg-gray-200 font-bold text-gray-500 text-md">
+      <table
+        {...getTableBodyProps()}
+        className="w-[80%] shadow-lg mt-10 tablet:w-[300px]"
+      >
+        <thead className="bg-gray-200 font-bold text-gray-500 text-md tablet:hidden">
           {headerGroups.map((headerGroup: any) => {
             return (
               <tr
@@ -112,13 +115,13 @@ const CoinTable: React.FC<{
               <tr
                 ref={rows.length - 1 === index ? ref : null}
                 {...row.getRowProps()}
-                className="border-[1px] border-gray-300"
+                className="border-[1px] border-gray-300 tablet:flex tablet:flex-col tablet:items-center  tablet:pl-2 tablet:pr-6 tablet:pb-6 tablet:pt-2 tablet:mb-4"
               >
                 {row.cells.map((cell) => {
                   return (
                     <td
                       {...cell.getCellProps()}
-                      className={`pl-[4%] py-4 font-medium text-md ${
+                      className={`pl-[4%] font-medium text-md tablet:w-full ${
                         cell.column.Header === "24H" && cell.value[0] !== "-"
                           ? "text-green-500"
                           : cell.value[0] === "-" && "text-red-500"
@@ -126,27 +129,44 @@ const CoinTable: React.FC<{
                     >
                       {cell.column.Header === "COIN" ? (
                         <Link
-                          className="flex"
+                          className="flex tablet:flex-col tablet:border-b-[1px] tablet:pb-1 tablet:border-gray-200"
                           href={`/${cell.row.original.col6}`}
                         >
-                          <Image
-                            src={String(cell.row.original.image)}
-                            alt="coinImage"
-                            width={25}
-                            height={10}
-                            className="mr-3"
-                          />
-                          {cell.render("Cell")}
+                          <label className="desktop:hidden text-xs text-gray-400 mt-2 mb-1">
+                            {cell.column.Header}
+                          </label>
+                          <div className="flex">
+                            <Image
+                              src={String(cell.row.original.image)}
+                              alt="coinImage"
+                              width={25}
+                              height={10}
+                              className="mr-3"
+                            />
+                            {cell.render("Cell")}
+                          </div>
                         </Link>
                       ) : cell.column.Header === "7D" ? (
-                        <div className="w-[50%] h-[25%]">
-                          {/* <TableChart
+                        <div className="w-full m-0 h-[70px] tablet:flex tablet:flex-col">
+                          <label className="desktop:hidden text-xs text-gray-400 mt-2 mb-1">
+                            {cell.column.Header}
+                          </label>
+                          <TableChart
                             id={String(cell.row.original.col6)}
                             status={String(cell.row.original.col4)}
-                          /> */}
+                          />
+                        </div>
+                      ) : cell.column.Header === "#" ? (
+                        <div className="tablet:hidden">
+                          {cell.render("Cell")}
                         </div>
                       ) : (
-                        cell.render("Cell")
+                        <div className="flex flex-col tablet:border-b-[1px] tablet:pb-1 tablet:border-gray-200">
+                          <label className="desktop:hidden text-xs text-gray-400 mt-2 mb-1">
+                            {String(cell.column.Header)}
+                          </label>
+                          {cell.render("Cell")}
+                        </div>
                       )}
                     </td>
                   );

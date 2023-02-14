@@ -8,6 +8,13 @@ module.exports = {
   ],
   theme: {
     extend: {},
+    screens: {
+      'phone': {"max": '375px'},
+  
+      'tablet': {"max": '790px'},
+  
+      'desktop': {"min": '791px'},
+    },
   },
   plugins: [],
 }
