@@ -20,19 +20,6 @@ const Navigation: React.FC<{ children: JSX.Element | JSX.Element[] }> = ({
     debouncedValue || ""
   );
 
-  const route200 = async () => {
-    try {
-      const resp = await axios.get("/api/login");
-      return resp.data;
-    } catch (error) {
-      console.error(error);
-    }
-  };
-
-  const { data: routeData, isLoading: Loading } = useQuery([], () =>
-    route200()
-  );
-  if (Loading) return <p>Loading...</p>;
   return (
     <>
       <div className="flex w-full justify-between bg-blue-500 sticky top-0 items-center tablet:z-50">
@@ -63,13 +50,7 @@ const Navigation: React.FC<{ children: JSX.Element | JSX.Element[] }> = ({
             alt="login"
             className="h-[30px] w-[30px] mr-1 mt-2"
           />
-          {routeData.length > 0 ? (
-            <p className="text-white font-medium text-xl m-2">
-              {routeData[routeData.length - 1].username}
-            </p>
-          ) : (
-            <p className="text-white font-medium text-xl m-2">LogIn</p>
-          )}
+          <p className="text-white font-medium text-xl m-2">LogIn</p>
         </Link>
       </div>
 

@@ -4,7 +4,6 @@ import Link from "next/link";
 import { useRouter } from "next/router";
 import rabbit from "../public/rabbit.png";
 import * as yup from "yup";
-import axios from "axios";
 
 interface LoginForm {
   username: string;
@@ -30,15 +29,6 @@ const Login: React.FC = () => {
       .required("You need to enter password!"),
   });
 
-  const postUserData = async (values: LoginForm) => {
-    try {
-      const resp = await axios.post("/api/login", values);
-      console.log(resp.data);
-    } catch (error) {
-      console.error(error);
-    }
-  };
-
   return (
     <div className="flex fixed top-0 left-0 bg-white w-full h-[100vh] tablet:top-auto">
       <div className="w-[30%] h-[100vh] bg-blue-500 shadow-xl flex flex-col justify-between items-center tablet:hidden">
@@ -58,15 +48,12 @@ const Login: React.FC = () => {
           initialValues={login}
           validationSchema={loginSchema}
           onSubmit={(values, actions) => {
-            postUserData(values);
-            console.log({ values, actions });
             actions.setSubmitting(false);
             localStorage.setItem("username", values.username);
             router.push("/");
           }}
         >
           {({ values, errors, touched }) => {
-            console.log(values);
             return (
               <Form className="my-10 w-[400px] phone:w-[300px]">
                 <div className="mb-10 flex flex-col">

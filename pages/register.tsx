@@ -103,7 +103,6 @@ const Register: React.FC = () => {
           initialValues={register}
           validationSchema={registerSchema}
           onSubmit={(values, actions) => {
-            console.log({ values, actions });
             actions.setSubmitting(false);
             router.push("/login");
           }}
