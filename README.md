@@ -30,17 +30,17 @@ Prerequisite: Node Package Manager (npm) download can be found <a href="https://
 ## Screenshots
 
 Login:
-![image]()
-![image]()
+![image](https://github.com/akrzelj-ossunist/gecko-coin-app/blob/main/public/readme-img/login-desk.png)
+![image](https://github.com/akrzelj-ossunist/gecko-coin-app/blob/main/public/readme-img/login-phone.png)
 
 Register:
-![image]()
-![image]()
+![image](https://github.com/akrzelj-ossunist/gecko-coin-app/blob/main/public/readme-img/register-desk.png)
+![image](https://github.com/akrzelj-ossunist/gecko-coin-app/blob/main/public/readme-img/register-phone.png)
 
 Home:
-![image]()
-![image]()
+![image](https://github.com/akrzelj-ossunist/gecko-coin-app/blob/main/public/readme-img/home-desk.png)
+![image](https://github.com/akrzelj-ossunist/gecko-coin-app/blob/main/public/readme-img/home-phone.png)
 
 Coin:
-![image]()
-![image]()
+![image](https://github.com/akrzelj-ossunist/gecko-coin-app/blob/main/public/readme-img/coin-desk.png)
+![image](https://github.com/akrzelj-ossunist/gecko-coin-app/blob/main/public/readme-img/coin-phone-1.png)
