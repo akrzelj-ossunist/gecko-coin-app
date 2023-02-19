@@ -2,6 +2,7 @@ import search from "../public/search.png";
 import Image from "next/image";
 import { useState } from "react";
 import Link from "next/link";
+import { useRouter } from "next/router";
 const SearchBar: React.FC<{
   setShowCoinSearchList: (val: boolean) => void;
   setCoinValue: (val: string) => void;
@@ -17,8 +18,13 @@ const SearchBar: React.FC<{
   coinData,
   className: classValues,
 }) => {
+  const router = useRouter();
   return (
-    <div className={`relative ${classValues}`}>
+    <div
+      className={`relative ${classValues} ${
+        router.pathname === "/login" ? "hidden" : ""
+      } ${router.pathname === "/register" ? "hidden" : ""}`}
+    >
       <Image
         src={search}
         alt="search"
