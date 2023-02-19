@@ -4,6 +4,8 @@ App created in NextJS with typescript and ESlint with function of listing and sh
 I also included a login and register page in case maybe one day I will include a back-end side of this website.
 Also you can sort and trough search bar filter coin u want to inspect.
 
+You can also visit this page <a href="https://bunny-coin-app.vercel.app">HERE</a>
+
 ## Getting started
 
 Prerequisite: Node Package Manager (npm) download can be found <a href="https://nodejs.org/en/download/">here</a>.
